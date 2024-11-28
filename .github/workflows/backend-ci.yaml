@@ -109,7 +109,7 @@ jobs:
     needs: [lint, test]
     defaults:
       run:
-        working-directory: .starter/backend
+        working-directory: starter/backend
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -144,6 +144,7 @@ jobs:
           mask-password: "true"
 
       - name: Build, Tag, and Push docker image
+        working-directory: starter/backend
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: backend
