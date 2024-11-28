@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./frontend
+        working-directory: starter/frontend
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -32,14 +32,16 @@ jobs:
             npm-
 
       - name: Install dependencies for FE
+        working-directory: starter/frontend
         run: |
           npm install
 
       - name: Run ESLint
+        working-directory: starter/frontend
         run: |
           npm run lint -- --fix
 
-  # Notes for future work and research: How to setup e2e test? Can I add lint check 
+  # Notes for future work and research: How to setup e2e test? Can I add lint check
   # and threw error when lint runs fail
 
   test:
@@ -47,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./frontend
+        working-directory: starter/frontend
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -63,7 +65,7 @@ jobs:
     needs: [lint, test]
     defaults:
       run:
-        working-directory: ./frontend
+        working-directory: starter/frontend
     steps:
       - name: Checkout code from main branch
         uses: actions/checkout@v3
@@ -75,9 +77,9 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-session-token: ${{secrets.AWS_SESSION_TOKEN}}
+          aws-access-key-id: ${{ secrets.LONGQB_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.LONGQB_AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.LONGQB_AWS_SESSION_TOKEN }}
           aws-region: us-east-1
 
       - name: Login to Amazon ECR
@@ -87,6 +89,7 @@ jobs:
           mask-password: "true"
 
       - name: Build, Tag, and Push docker image to AWS ECR
+        working-directory: starter/frontend
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: frontend
