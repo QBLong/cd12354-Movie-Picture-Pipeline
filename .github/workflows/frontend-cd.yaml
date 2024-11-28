@@ -159,5 +159,5 @@ jobs:
 
       - name: Apply Kubernetes resources
         run: |
-          kustomize build | kubectl apply -f --validate=false -
+          kustomize build | kubectl apply -f --validate=false
         working-directory: starter/frontend/k8s
