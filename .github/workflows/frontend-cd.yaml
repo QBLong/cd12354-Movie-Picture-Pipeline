@@ -153,7 +153,7 @@ jobs:
           REPOSITORY: frontend
           IMAGE_TAG: latest
         run: |
-          aws eks update-kubeconfig --name udacity-project4 --region us-east-1
+          aws eks update-kubeconfig --name cluster --region us-east-1
           kustomize edit set image frontend=$REGISTRY/$REPOSITORY:$IMAGE_TAG
         working-directory: starter/frontend/k8s
 
