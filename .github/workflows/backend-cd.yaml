@@ -9,6 +9,15 @@ on:
     paths:
       # This will only run on changes to the backend code
       - "backend/**"
+  # Get secrets from github repo
+  workflow_call:
+    secrets:
+      LONGQB_AWS_ACCESS_KEY_ID:
+        required: true
+      LONGQB_AWS_SECRET_ACCESS_KEY:
+        required: true
+      LONGQB_AWS_SESSION_TOKEN:
+        required: true
 
 env:
   PYTHON_VERSION: "3.11.10"
@@ -23,30 +32,33 @@ jobs:
         working-directory: ./backend
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
-      - name: Cache pipenv dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pipenv
-          key: pipenv-${{ runner.os }}-${{ hashFiles('**/Pipfile.lock') }}
-          restore-keys: |
-            pipenv-${{ runner.os }}-
+      # - name: Cache pipenv dependencies
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: ~/.cache/pipenv
+      #     key: pipenv-${{ runner.os }}-${{ hashFiles('**/Pipfile.lock') }}
+      #     restore-keys: |
+      #       pipenv-${{ runner.os }}-
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v4
         with:
           python-version: ${{env.PYTHON_VERSION}}
 
       - name: Install pipenv
+        working-directory: starter/backend
         run: |
           pip install pipenv && pip install flake8
 
       - name: Install dependencies
+        working-directory: starter/backend
         run: |
           pipenv install
 
       - name: Run lint
+        working-directory: starter/backend
         run: |
           pipenv run lint
 
@@ -56,7 +68,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./backend
+        working-directory: starter/backend
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -67,14 +79,17 @@ jobs:
           python-version: ${{env.PYTHON_VERSION}}
 
       - name: Install pipenv
+        working-directory: starter/backend
         run: |
           pip install pipenv && pip install flake8
 
       - name: Install dependencies
+        working-directory: starter/backend
         run: |
           pipenv install
 
       - name: Run tests
+        working-directory: starter/backend
         run: |
           pipenv run test
 
@@ -90,7 +105,7 @@ jobs:
     needs: [lint, test]
     defaults:
       run:
-        working-directory: ./backend
+        working-directory: starter/backend
     steps:
       - name: Checkout code from main branch to get latest code
         uses: actions/checkout@v3
@@ -101,10 +116,12 @@ jobs:
           python-version: ${{env.PYTHON_VERSION}}
 
       - name: Install pipenv
+        working-directory: starter/backend
         run: |
           pip install pipenv && pip install flake8
 
       - name: Install dependencies
+        working-directory: starter/backend
         run: |
           pipenv install
 
@@ -123,6 +140,7 @@ jobs:
           mask-password: "true"
 
       - name: Build, Tag, and Push docker image to Amazon ECR
+        working-directory: starter/backend
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: backend
