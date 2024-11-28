@@ -9,6 +9,15 @@ on:
     paths:
       # This will only run on changes to the backend code
       - "backend/**"
+  # Get secrets from github repo
+  workflow_call:
+    secrets:
+      LONGQB_AWS_ACCESS_KEY_ID:
+        required: true
+      LONGQB_AWS_SECRET_ACCESS_KEY:
+        required: true
+      LONGQB_AWS_SESSION_TOKEN:
+        required: true
 
 env:
   PYTHON_VERSION: "3.11.10"
