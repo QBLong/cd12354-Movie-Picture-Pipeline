@@ -94,10 +94,13 @@ jobs:
   build:
     name: Build & push image to AWS ECR
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     needs: [lint, test]
     defaults:
       run:
-        working-directory: ./backend
+        working-directory: .starter/backend
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
