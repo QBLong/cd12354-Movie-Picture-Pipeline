@@ -140,6 +140,7 @@ jobs:
 
       - name: Update kubeconfig
         run: |
+          aws sts get-caller-identity
           aws eks update-kubeconfig --name cluster
 
       - name: Run init.sh

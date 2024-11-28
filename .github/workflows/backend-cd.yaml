@@ -184,7 +184,9 @@ jobs:
           mask-password: "true"
 
       - name: Update kubeconfig
-        run: aws eks update-kubeconfig --name cluster
+        run: |
+          aws sts get-caller-identity
+          aws eks update-kubeconfig --name cluster
 
       - name: Run init.sh
         run: ./init.sh || true
