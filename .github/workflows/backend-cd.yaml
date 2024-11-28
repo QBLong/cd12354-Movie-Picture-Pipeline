@@ -191,13 +191,14 @@ jobs:
         working-directory: ./setup
 
       - name: Set Docker image in Kustomize
+        working-directory: starter/backend
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: backend
           IMAGE_TAG: latest
         run: kustomize edit set image backend=$REGISTRY/$REPOSITORY:$IMAGE_TAG
-        working-directory: ./backend/k8s
+        working-directory: starter/backend/k8s
 
       - name: Apply Kubernetes resources
         run: kustomize build | kubectl apply -f -
-        working-directory: ./backend/k8s
+        working-directory: starter/backend/k8s
