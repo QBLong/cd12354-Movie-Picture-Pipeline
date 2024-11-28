@@ -201,5 +201,5 @@ jobs:
         working-directory: starter/backend/k8s
 
       - name: Apply Kubernetes resources
-        run: kustomize build | kubectl apply -f
+        run: kustomize build --validate=false | kubectl apply -f -
         working-directory: starter/backend/k8s
