@@ -31,6 +31,7 @@ jobs:
           key: pipenv-${{ runner.os }}-${{ hashFiles('**/Pipfile.lock') }}
           restore-keys: |
             pipenv-${{ runner.os }}-
+          run: echo ${{ runner.os }}
 
       - name: Setup Python
         uses: actions/setup-python@v5
