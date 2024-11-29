@@ -77,9 +77,9 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.LONGQB_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.LONGQB_AWS_SECRET_ACCESS_KEY }}
-          aws-session-token: ${{ secrets.LONGQB_AWS_SESSION_TOKEN }}
+          aws-access-key-id: ${{ secrets.LONGQB_GA_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.LONGQB_GA_SECRET_ACCESS_KEY }}
+          # aws-session-token: ${{ secrets.LONGQB_AWS_SESSION_TOKEN }}
           aws-region: us-east-1
 
       - name: Login to Amazon ECR
