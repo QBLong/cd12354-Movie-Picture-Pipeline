@@ -158,11 +158,11 @@ jobs:
           kustomize edit set image frontend=$REGISTRY/$REPOSITORY:$IMAGE_TAG
         working-directory: starter/frontend/k8s
 
-      - name: Get FE URL
-        run: |
-          kubectl get svc -a
-
       - name: Apply Kubernetes resources
         run: |
           kustomize build | kubectl apply -f -
         working-directory: starter/frontend/k8s
+
+      - name: Get FE URL
+        run: |
+          kubectl get svc
